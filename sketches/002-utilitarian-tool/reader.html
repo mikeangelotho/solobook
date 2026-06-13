@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoloBook — Reader View</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+      color: #1a1a1a;
+      background: #fff;
+      line-height: 1.8;
+      min-height: 100vh;
+    }
+    
+    .reader-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+    
+    .chapter-label {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 24px;
+    }
+    
+    .chapter-title {
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 48px;
+      color: #1a1a1a;
+    }
+    
+    .chapter-body h2 {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+    
+    .chapter-body h3 {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 36px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+    
+    .chapter-body p {
+      font-size: 17px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .chapter-body code {
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 14px;
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: #c7254e;
+    }
+    
+    .chapter-body pre {
+      background: #1a1a1a;
+      color: #e8e8e8;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 24px 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .chapter-body blockquote {
+      border-left: 3px solid #0066ff;
+      padding-left: 20px;
+      margin: 24px 0;
+      color: #666;
+      font-style: italic;
+    }
+    
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid #e8e8e8;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+    }
+    
+    .nav-btn {
+      background: transparent;
+      border: 1px solid #d0d0d0;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-family: -apple-system, sans-serif;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      color: #666;
+    }
+    
+    .nav-btn:hover {
+      border-color: #999;
+      color: #1a1a1a;
+    }
+    
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .nav-center {
+      font-family: -apple-system, sans-serif;
+      font-size: 13px;
+      color: #999;
+    }
+    
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: #0066ff;
+      width: 33%;
+      z-index: 100;
+      transition: width 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  
+  <div class="reader-container">
+    <div class="chapter-label">Chapter 1 of 3</div>
+    <h1 class="chapter-title">Introduction to Rust</h1>
+    
+    <div class="chapter-body">
+      <p>Rust is a systems programming language focused on safety, performance, and concurrency. It guarantees memory safety without garbage collection, making it ideal for performance-critical applications.</p>
+      
+      <h2>Memory Safety</h2>
+      <p>Rust guarantees memory safety without garbage collection. This is achieved through its unique ownership system, which enforces strict rules at compile time about how memory is allocated, accessed, and freed.</p>
+      
+      <h3>The Borrow Checker</h3>
+      <p>The borrow checker is Rust's most distinctive feature. It enforces two rules:</p>
+      <p>First, each value in Rust has a variable that's called its <em>owner</em>. Second, there can only be one owner at a time. When the owner goes out of scope, the value is dropped.</p>
+      
+      <pre><code>fn main() {
+    let s1 = String::from("hello");
+    let s2 = s1; // s1 is moved, no longer valid
+    // println!("{}", s1); // This would fail!
+    println!("{}", s2); // This works
+}</code></pre>
+      
+      <h2>Performance</h2>
+      <p>Rust has zero-cost abstractions. The high-level features you use compile down to efficient low-level code — no runtime overhead. This means you get the ergonomics of a high-level language with the performance of C or C++.</p>
+      
+      <blockquote>
+        "Rust is the only language I've used that makes me feel like I'm cheating — getting away with something I shouldn't be able to." — A happy Rust developer
+      </blockquote>
+      
+      <p>Whether you're building operating systems, game engines, or web servers, Rust gives you the tools to write fast, reliable code without the usual tradeoffs.</p>
+    </div>
+  </div>
+  
+  <nav class="nav-bar">
+    <button class="nav-btn" disabled>← Previous</button>
+    <span class="nav-center">Ch. 1: Introduction to Rust</span>
+    <button class="nav-btn">Next →</button>
+  </nav>
+</body>
+</html>
