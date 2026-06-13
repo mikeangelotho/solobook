@@ -8,5 +8,8 @@ export default defineConfig({
     solidStart(),
     tailwindcss(),
     nitro()
-  ]
+  ],
+  server: {
+    allowedHosts: ["bippy-1.tail44eee4.ts.net"]
+  }
 });
