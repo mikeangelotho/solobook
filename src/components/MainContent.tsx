@@ -10,15 +10,6 @@ import ProgressBar from "./Book/ProgressBar";
 export default function MainContent() {
   const { state } = bookStore;
 
-  const currentView = createMemo(() => {
-    const section = state.currentSection;
-    if (section === "cover") return <Cover />;
-    if (section === "toc") return <TableOfContents />;
-    if (section === "appendix") return <Appendix />;
-    if (typeof section === "number") return <Chapter index={section} />;
-    return <Cover />;
-  });
-
   return (
     <main class="flex-1 min-h-screen relative">
       <Show when={state.chapters.length > 0}>
@@ -37,7 +28,18 @@ export default function MainContent() {
           </div>
         }
       >
-        {currentView()}
+        <Show when={state.currentSection === "cover"}>
+          <Cover />
+        </Show>
+        <Show when={state.currentSection === "toc"}>
+          <TableOfContents />
+        </Show>
+        <Show when={state.currentSection === "appendix"}>
+          <Appendix />
+        </Show>
+        <Show when={typeof state.currentSection === "number"}>
+          <Chapter index={state.currentSection as number} />
+        </Show>
       </Show>
 
       <Show when={state.chapters.length > 0}>
