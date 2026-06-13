@@ -6,7 +6,7 @@ export default function TableOfContents() {
   const chapters = createMemo(() => activeBook()?.chapters ?? []);
 
   return (
-    <div class="max-w-2xl mx-auto py-12 px-8">
+    <div class="max-w-2xl mx-auto pt-16 pb-12 px-8 md:py-12">
       <h2 class="text-3xl font-bold text-gray-900 mb-8">Contents</h2>
 
       <div class="space-y-6">

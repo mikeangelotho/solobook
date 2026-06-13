@@ -1,5 +1,6 @@
-import { Show, For } from "solid-js";
+import { Show, For, createSignal, onMount } from "solid-js";
 import type { Book } from "~/lib/workspaceStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 import BookCard from "./BookCard";
 
 interface WorkspaceViewProps {
@@ -10,8 +11,16 @@ interface WorkspaceViewProps {
 }
 
 export default function WorkspaceView(props: WorkspaceViewProps) {
+  const [storageOk, setStorageOk] = createSignal(true);
+  onMount(() => setStorageOk(workspaceStore.storageAvailable));
+
   return (
-    <div class="px-4 py-8 md:px-8 md:py-10 lg:px-10 lg:py-12 max-w-6xl mx-auto">
+    <div class="px-4 pt-20 pb-8 md:px-8 md:py-10 lg:px-10 lg:py-12 max-w-6xl mx-auto">
+      <Show when={!storageOk()}>
+        <div class="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <strong>Storage unavailable:</strong> your books won't persist between sessions. If you're using Brave, try disabling Shields for this page (<kbd class="rounded bg-amber-100 px-1 font-mono text-xs">brave://settings/shields</kbd>) or allow localStorage in site settings.
+        </div>
+      </Show>
       {/* Header */}
       <div class="flex items-center justify-between mb-8">
         <h1 class="text-2xl font-bold text-gray-900">Your Books</h1>

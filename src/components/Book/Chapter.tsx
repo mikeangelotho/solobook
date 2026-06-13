@@ -24,7 +24,7 @@ export default function Chapter(props: ChapterProps) {
   });
 
   return (
-    <article class="max-w-2xl mx-auto py-12 px-8">
+    <article class="max-w-2xl mx-auto pt-16 pb-12 px-8 md:py-12">
       <div class="mb-8">
         <span class="text-sm font-mono text-gray-400">
           Chapter {props.index + 1} of {chapters().length}

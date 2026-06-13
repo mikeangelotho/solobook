@@ -86,13 +86,15 @@ export default function Sidebar(props: SidebarProps) {
 
   return (
     <>
-      {/* Mobile hamburger toggle */}
-      <button
-        class="md:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center shadow-sm"
-        onClick={() => setIsOpen(!isOpen())}
-      >
-        <span class="text-lg">{isOpen() ? "✕" : "☰"}</span>
-      </button>
+      {/* Mobile hamburger toggle — only visible when sidebar is closed */}
+      <Show when={!isOpen()}>
+        <button
+          class="md:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-white border border-gray-200 rounded-lg flex items-center justify-center shadow-sm"
+          onClick={() => setIsOpen(true)}
+        >
+          <span class="text-lg">☰</span>
+        </button>
+      </Show>
 
       {/* Mobile backdrop */}
       <Show when={isOpen()}>
@@ -107,52 +109,61 @@ export default function Sidebar(props: SidebarProps) {
           ${isOpen() ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         {/* Header */}
-        <div class="px-5 py-5 border-b border-gray-200">
-          <h1 class="text-xl font-semibold text-gray-900">SoloBook</h1>
-          <Show when={isWorkspaceMode()} fallback={
-            <Show when={isEditingMeta()} fallback={
-              <p
-                class="text-xs text-gray-500 mt-1 truncate cursor-pointer hover:text-[#0066ff] transition-colors"
-                onClick={handleEnterEditMode}
-                title="Click to edit"
-              >
-                {activeBook()?.meta.title ?? "Untitled"}
-              </p>
-            }>
-              <div class="mt-2 space-y-1.5">
-                <input
-                  type="text"
-                  value={editTitle()}
-                  onInput={(e) => setEditTitle(e.currentTarget.value)}
-                  placeholder="Title"
-                  class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0066ff] focus:border-[#0066ff]"
-                />
-                <input
-                  type="text"
-                  value={editAuthor()}
-                  onInput={(e) => setEditAuthor(e.currentTarget.value)}
-                  placeholder="Author"
-                  class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0066ff] focus:border-[#0066ff]"
-                />
-                <div class="flex gap-1.5">
-                  <button
-                    class="flex-1 bg-[#0066ff] text-white px-2 py-1 rounded text-xs font-medium hover:bg-[#0052cc] transition-colors"
-                    onClick={handleSaveMeta}
-                  >
-                    Save
-                  </button>
-                  <button
-                    class="flex-1 bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium hover:bg-gray-200 transition-colors"
-                    onClick={handleCancelEdit}
-                  >
-                    Cancel
-                  </button>
+        <div class="px-5 py-5 border-b border-gray-200 flex items-start justify-between">
+          <div class="flex-1 min-w-0">
+            <h1 class="text-xl font-semibold text-gray-900">SoloBook</h1>
+            <Show when={isWorkspaceMode()} fallback={
+              <Show when={isEditingMeta()} fallback={
+                <p
+                  class="text-xs text-gray-500 mt-1 truncate cursor-pointer hover:text-[#0066ff] transition-colors"
+                  onClick={handleEnterEditMode}
+                  title="Click to edit"
+                >
+                  {activeBook()?.meta.title ?? "Untitled"}
+                </p>
+              }>
+                <div class="mt-2 space-y-1.5">
+                  <input
+                    type="text"
+                    value={editTitle()}
+                    onInput={(e) => setEditTitle(e.currentTarget.value)}
+                    placeholder="Title"
+                    class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0066ff] focus:border-[#0066ff]"
+                  />
+                  <input
+                    type="text"
+                    value={editAuthor()}
+                    onInput={(e) => setEditAuthor(e.currentTarget.value)}
+                    placeholder="Author"
+                    class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-[#0066ff] focus:border-[#0066ff]"
+                  />
+                  <div class="flex gap-1.5">
+                    <button
+                      class="flex-1 bg-[#0066ff] text-white px-2 py-1 rounded text-xs font-medium hover:bg-[#0052cc] transition-colors"
+                      onClick={handleSaveMeta}
+                    >
+                      Save
+                    </button>
+                    <button
+                      class="flex-1 bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium hover:bg-gray-200 transition-colors"
+                      onClick={handleCancelEdit}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </Show>
+            }>
+              <p class="text-xs text-gray-500 mt-1">Your Library</p>
             </Show>
-          }>
-            <p class="text-xs text-gray-500 mt-1">Your Library</p>
-          </Show>
+          </div>
+          {/* Close button — inside sidebar, visible only on mobile */}
+          <button
+            class="md:hidden ml-2 mt-0.5 w-7 h-7 flex items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0"
+            onClick={() => setIsOpen(false)}
+          >
+            <span class="text-sm">✕</span>
+          </button>
         </div>
 
         {/* --- Workspace mode --- */}

@@ -23,7 +23,7 @@ export default function Appendix() {
   });
 
   return (
-    <div class="max-w-2xl mx-auto py-12 px-8">
+    <div class="max-w-2xl mx-auto pt-16 pb-12 px-8 md:py-12">
       <h2 class="text-3xl font-bold text-gray-900 mb-2">Appendix</h2>
       <p class="text-gray-500 mb-8">Collected references from all chapters</p>
 

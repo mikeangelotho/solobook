@@ -4,12 +4,8 @@ import { solidStart } from "@solidjs/start/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  plugins: [
-    solidStart(),
-    tailwindcss(),
-    nitro()
-  ],
+  plugins: [solidStart({ ssr: false }), tailwindcss(), nitro()],
   server: {
-    allowedHosts: ["bippy-1.tail44eee4.ts.net"]
-  }
+    allowedHosts: ["bippy.tail44eee4.ts.net"],
+  },
 });

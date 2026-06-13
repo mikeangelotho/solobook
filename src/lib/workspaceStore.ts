@@ -40,14 +40,24 @@ function generateId(): string {
 
 // --- localStorage persistence ---
 
-// Check if localStorage is available before using it (SSR-safe)
-const hasLocalStorage = typeof window !== "undefined" && 
-                      typeof localStorage !== "undefined" && 
-                      localStorage !== null;
+// Check if localStorage is actually writable (catches Brave Shields blocking it)
+function checkStorageAvailable(): boolean {
+    if (typeof window === "undefined") return false;
+    try {
+        const testKey = "__solobook_test__";
+        localStorage.setItem(testKey, "1");
+        localStorage.removeItem(testKey);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+const storageAvailable = checkStorageAvailable();
 
 function loadFromStorage(): WorkspaceState | null {
-    if (!hasLocalStorage) return null;
-    
+    if (!storageAvailable) return null;
+
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
@@ -58,15 +68,13 @@ function loadFromStorage(): WorkspaceState | null {
         }
     } catch {
         // Corrupt data — start fresh
-        if (typeof localStorage !== "undefined") {
-            localStorage.removeItem(STORAGE_KEY);
-        }
+        localStorage.removeItem(STORAGE_KEY);
     }
     return null;
 }
 
 function migrateOldBookStore(): Book | null {
-    if (!hasLocalStorage) return null;
+    if (!storageAvailable) return null;
     
     try {
         const raw = localStorage.getItem(OLD_STORAGE_KEY);
@@ -93,9 +101,7 @@ function migrateOldBookStore(): Book | null {
         return book;
     } catch {
         // Corrupt old data — just remove it
-        if (typeof localStorage !== "undefined") {
-            localStorage.removeItem(OLD_STORAGE_KEY);
-        }
+        localStorage.removeItem(OLD_STORAGE_KEY);
         return null;
     }
 }
@@ -113,10 +119,10 @@ function createWorkspaceStore() {
 
     const [state, setState] = createStore<WorkspaceState>(initialState);
 
-    // Debounced save to localStorage (SSR-safe)
+    // Debounced save to localStorage
     let saveTimeout: ReturnType<typeof setTimeout> | null = null;
     const saveToStorage = () => {
-        if (!hasLocalStorage || !saveTimeout) return;
+        if (!storageAvailable) return;
         if (saveTimeout) clearTimeout(saveTimeout);
         saveTimeout = setTimeout(() => {
             try {
@@ -327,6 +333,7 @@ function createWorkspaceStore() {
 
     return {
         state,
+        storageAvailable,
         // Derived getters
         activeBook,
         books,
