@@ -1,8 +1,8 @@
 import { For, Show, createMemo } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function Appendix() {
-  const { getAppendix } = bookStore;
+  const { getAppendix } = workspaceStore;
 
   const groupedLinks = createMemo(() => {
     const links = getAppendix();

@@ -1,14 +1,15 @@
 import { createMemo } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 interface ChapterProps {
   index: number;
 }
 
 export default function Chapter(props: ChapterProps) {
-  const { state } = bookStore;
+  const { activeBook } = workspaceStore;
+  const chapters = createMemo(() => activeBook()?.chapters ?? []);
 
-  const chapter = createMemo(() => state.chapters[props.index]);
+  const chapter = createMemo(() => chapters()[props.index]);
 
   const processedHtml = createMemo(() => {
     if (!chapter()) return "";
@@ -26,7 +27,7 @@ export default function Chapter(props: ChapterProps) {
     <article class="max-w-2xl mx-auto py-12 px-8">
       <div class="mb-8">
         <span class="text-sm font-mono text-gray-400">
-          Chapter {props.index + 1} of {state.chapters.length}
+          Chapter {props.index + 1} of {chapters().length}
         </span>
       </div>
 

@@ -1,8 +1,9 @@
 import { createMemo, onMount, onCleanup } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function Navigation() {
-  const { state, getSections, navigateNext, navigatePrev } = bookStore;
+  const { state, activeBook, getSections, navigateNext, navigatePrev } = workspaceStore;
+  const chapters = createMemo(() => activeBook()?.chapters ?? []);
 
   const sections = createMemo(() => getSections());
   const currentIndex = createMemo(() => sections().indexOf(state.currentSection));
@@ -15,7 +16,7 @@ export default function Navigation() {
     if (s === "cover") return "Cover";
     if (s === "toc") return "Contents";
     if (s === "appendix") return "Appendix";
-    if (typeof s === "number") return `Ch. ${s + 1}: ${state.chapters[s]?.title ?? ""}`;
+    if (typeof s === "number") return `Ch. ${s + 1}: ${chapters()[s]?.title ?? ""}`;
     return "";
   });
 

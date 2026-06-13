@@ -1,6 +1,6 @@
 import { createSignal, onMount, onCleanup } from "solid-js";
 import { parseMarkdownFile, type ParsedChapter } from "~/lib/markdown";
-import { bookStore } from "~/lib/bookStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function DragOverlay() {
   const [isDragging, setIsDragging] = createSignal(false);
@@ -12,12 +12,19 @@ export default function DragOverlay() {
     );
     if (mdFiles.length === 0) return;
 
-    const chapters: ParsedChapter[] = [];
+    const parsedChapters: ParsedChapter[] = [];
     for (let i = 0; i < mdFiles.length; i++) {
       const text = await mdFiles[i].text();
-      chapters.push(parseMarkdownFile(text, mdFiles[i].name, i));
+      parsedChapters.push(parseMarkdownFile(text, mdFiles[i].name, i));
     }
-    bookStore.setChapters(chapters);
+
+    if (workspaceStore.state.activeBookId === null) {
+      // Workspace mode: create a new book from dropped files
+      workspaceStore.createBook("Untitled Book");
+    }
+    // In both cases, set chapters on the active book
+    // (createBook above already set it as active; setChapters also auto-renames "Untitled Book")
+    workspaceStore.setChapters(parsedChapters);
   };
 
   onMount(() => {

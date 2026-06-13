@@ -1,27 +1,29 @@
-import { Show } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { Show, createMemo } from "solid-js";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function Cover() {
-  const { state, navigateTo } = bookStore;
+  const { activeBook, navigateTo } = workspaceStore;
+  const chapters = createMemo(() => activeBook()?.chapters ?? []);
+  const meta = createMemo(() => activeBook()?.meta);
 
   const totalWords = () =>
-    state.chapters.reduce((sum, ch) => sum + ch.wordCount, 0);
+    chapters().reduce((sum, ch) => sum + ch.wordCount, 0);
 
   return (
     <div class="min-h-[80vh] flex flex-col items-center justify-center text-center px-8">
       <div class="w-16 h-0.5 bg-[#0066ff] mx-auto mb-10" />
 
       <h1 class="text-4xl font-normal text-gray-900 mb-3 leading-tight">
-        {state.meta.title}
+        {meta()?.title}
       </h1>
-      <Show when={state.meta.author && state.meta.author !== "Unknown"}>
-        <p class="text-lg text-gray-500 mb-2">by {state.meta.author}</p>
+      <Show when={meta()?.author && meta()?.author !== "Unknown"}>
+        <p class="text-lg text-gray-500 mb-2">by {meta()?.author}</p>
       </Show>
 
       <div class="w-16 h-0.5 bg-gray-200 mx-auto mt-10 mb-8" />
 
       <div class="text-sm text-gray-400 space-y-1">
-        <p>{state.chapters.length} chapters • {totalWords().toLocaleString()} words</p>
+        <p>{chapters().length} chapters • {totalWords().toLocaleString()} words</p>
         <p>~{Math.ceil(totalWords() / 250)} min read</p>
       </div>
 

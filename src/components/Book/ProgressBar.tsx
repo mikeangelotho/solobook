@@ -1,8 +1,8 @@
 import { createMemo } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function ProgressBar() {
-  const { state, getSections } = bookStore;
+  const { state, getSections } = workspaceStore;
 
   const progress = createMemo(() => {
     const sections = getSections();

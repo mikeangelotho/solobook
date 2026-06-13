@@ -1,15 +1,16 @@
-import { For } from "solid-js";
-import { bookStore } from "~/lib/bookStore";
+import { For, createMemo } from "solid-js";
+import { workspaceStore } from "~/lib/workspaceStore";
 
 export default function TableOfContents() {
-  const { state, navigateTo } = bookStore;
+  const { navigateTo, activeBook } = workspaceStore;
+  const chapters = createMemo(() => activeBook()?.chapters ?? []);
 
   return (
     <div class="max-w-2xl mx-auto py-12 px-8">
       <h2 class="text-3xl font-bold text-gray-900 mb-8">Contents</h2>
 
       <div class="space-y-6">
-        <For each={state.chapters}>
+        <For each={chapters()}>
           {(chapter, index) => (
             <div>
               <button
