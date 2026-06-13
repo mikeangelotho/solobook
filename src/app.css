@@ -1,18 +1,49 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background-rgb: 214, 219, 220;
-  --foreground-rgb: 0, 0, 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background-rgb: 0, 0, 0;
-    --foreground-rgb: 255, 255, 255;
-  }
+  color-scheme: light;
+  --color-accent: #0066ff;
+  --color-accent-hover: #0052cc;
 }
 
 body {
-  background: rgb(var(--background-rgb));
-  color: rgb(var(--foreground-rgb));
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reader typography: serif body, sans UI */
+.reader-prose {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #333;
+}
+
+/* Smooth scrolling for in-page anchors */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for sidebar */
+aside::-webkit-scrollbar {
+  width: 4px;
+}
+aside::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+/* Prose overrides for chapter content */
+.prose {
+  --tw-prose-body: #333;
+  --tw-prose-headings: #1a1a1a;
+  --tw-prose-links: #0066ff;
+  --tw-prose-code: #c7254e;
+  --tw-prose-pre-bg: #1a1a1a;
+  --tw-prose-pre-code: #e8e8e8;
+  --tw-prose-quote-borders: #0066ff;
 }
