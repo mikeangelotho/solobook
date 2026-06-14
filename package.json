@@ -15,7 +15,8 @@
     "dompurify": "^3.4.10",
     "marked": "^18.0.5",
     "solid-js": "^1.9.5",
-    "vite": "^7.0.0"
+    "vite": "^7.0.0",
+    "wrangler": "^4.100.0"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.7",
